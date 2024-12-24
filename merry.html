@@ -86,7 +86,7 @@
                 <p id="recipientGreeting" class="text-green-900 underline underline-offset-4 text-2xl"></p>
                 <p class="mt-2 christmas-font text-2xl" id="userMessage"></p>
                 <p id="senderGreeting" class="mt-2 text-green-900 underline underline-offset-4 text-2xl"></p>
-                <button class="btn btn-secondary mt-4" onclick="shareAsImage()">Share as Image</button>
+                <button id="shareButton" class="btn btn-secondary mt-4" onclick="shareAsImage()">Share as Image</button>
             </div>
         </div>
     </div>
@@ -116,6 +116,7 @@
 
         function shareAsImage() {
             const wishCard = document.getElementById('wishCard');
+            const btn = document.getElementById('shareButton').style.display = 'none';
             // const img = document.getElementById('christmasImage');
             const img = new Image();
             img.crossOrigin = 'anonymous'; // Set CORS attribute
