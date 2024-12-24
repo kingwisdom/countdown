@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Wishes</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .christmas-font {
+            font-family: "Berkshire Swash", serif;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            animation: snowfall 10s linear infinite;
+        }
+
+        .snowflake::before {
+            content: '❄';
+            font-size: 20px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-red-100 to-green-100 h-auto flex items-center justify-center p-4">
+    <div id="snowfall"></div>
+    <div id="wishCard" class="card w-96 bg-base-100 shadow-xl">
+        <figure class="px-10 pt-10">
+            <img id="christmasImage"
+                src="https://static.vecteezy.com/system/resources/thumbnails/027/653/361/small/merry-christmas-and-happy-new-year-greeting-card-santa-claus-on-winter-background-ai-generated-photo.jpg"
+                alt="Christmas Tree" class="rounded-xl" />
+        </figure>
+        <div class="card-body items-center text-center">
+            <h2 class="card-title text-4xl font-bold text-red-600 christmas-font animate-bounce">Merry Christmas!</h2>
+            <div id="createWishBtn" class="mt-4">
+                <button class="btn btn-primary bg-green-500 hover:bg-green-600 border-none" onclick="showForm()">Create
+                    a Wish</button>
+            </div>
+            <div id="wishForm" class="w-full hidden">
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Your Name</span>
+                    </label>
+                    <input type="text" id="senderName" placeholder="Enter your name"
+                        class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="form-control w-full max-w-xs mt-4">
+                    <label class="label">
+                        <span class="label-text">Recipient's Name</span>
+                    </label>
+                    <input type="text" id="recipientName" placeholder="Enter the person's name"
+                        class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="form-control w-full max-w-xs mt-4">
+                    <label class="label">
+                        <span class="label-text">Your Message</span>
+                    </label>
+                    <textarea type="text" id="recipientMessage" placeholder="Enter your Christmas wishes"
+                        class="input input-bordered w-full max-w-xs" rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary bg-red-500 hover:bg-red-600 border-none mt-6" onclick="sendWishes()">Send
+                    Wishes</button>
+            </div>
+            <div id="wishMessage" class="mt-4 text-lg font-semibold text-green-700 hidden">
+                <p id="recipientGreeting" class="text-green-900 underline underline-offset-4 text-2xl"></p>
+                <p class="mt-2 christmas-font text-2xl" id="userMessage"></p>
+                <p id="senderGreeting" class="mt-2 text-green-900 underline underline-offset-4 text-2xl"></p>
+                <button class="btn btn-secondary mt-4" onclick="shareAsImage()">Share as Image</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showForm() {
+            document.getElementById('createWishBtn').classList.add('hidden');
+            document.getElementById('wishForm').classList.remove('hidden');
+        }
+
+        function sendWishes() {
+            const senderName = document.getElementById('senderName').value;
+            const recipientName = document.getElementById('recipientName').value;
+            const recipientMessage = document.getElementById('recipientMessage').value || 'Wishing you a Merry Christmas and a Happy New Year!';
+
+            if (senderName && recipientName) {
+                document.getElementById('recipientGreeting').textContent = `Dear ${recipientName},`;
+                document.getElementById('senderGreeting').textContent = `From, ${senderName}`;
+                document.getElementById('userMessage').textContent = recipientMessage;
+
+                document.getElementById('wishForm').classList.add('hidden');
+                document.getElementById('wishMessage').classList.remove('hidden');
+            } else {
+                alert('Please enter both sender and recipient names.');
+            }
+        }
+
+        function shareAsImage() {
+            const wishCard = document.getElementById('wishCard');
+            // const img = document.getElementById('christmasImage');
+            const img = new Image();
+            img.crossOrigin = 'anonymous'; // Set CORS attribute
+            img.src = 'https://static.vecteezy.com/system/resources/thumbnails/027/653/361/small/merry-christmas-and-happy-new-year-greeting-card-santa-claus-on-winter-background-ai-generated-photo.jpg?nc=' + new Date().getTime(); // Add a cache-busting parameter
+
+            // Ensure the image is displayed in the canvas
+            img.style.display = 'block';
+
+            // Use html2canvas to capture the wish card
+            html2canvas(wishCard).then(function (canvas) {
+                const link = document.createElement('a');
+                link.download = 'christmas-wish.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }).catch(function (error) {
+                console.error('Error capturing the wish card:', error);
+            });
+
+            // Restore original display state
+            img.style.display = 'block';
+        }
+        // Create snowflakes
+        const snowfall = document.getElementById('snowfall');
+        for (let i = 0; i < 50; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            snowflake.style.opacity = Math.random();
+            snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
+            snowfall.appendChild(snowflake);
+        }
+    </script>
+</body>
+
+</html>
