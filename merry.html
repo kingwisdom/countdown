@@ -77,10 +77,11 @@
                         <span class="label-text">Your Message</span>
                     </label>
                     <textarea type="text" id="recipientMessage" placeholder="Enter your Christmas wishes"
-                        class="input input-bordered w-full max-w-xs" rows="3"></textarea>
+                        class="input input-bordered w-full max-w-xs h-24">🎄✨ Wishing you a Merry Christmas filled with joy, love, and endless blessings! 🎁🎅❤️</textarea>
                 </div>
                 <button class="btn btn-primary bg-red-500 hover:bg-red-600 border-none mt-6" onclick="sendWishes()">Send
                     Wishes</button>
+
             </div>
             <div id="wishMessage" class="mt-4 text-lg font-semibold text-green-700 hidden">
                 <p id="recipientGreeting" class="text-green-900 underline underline-offset-4 text-2xl"></p>
@@ -89,6 +90,8 @@
                 <button id="shareButton" class="btn btn-secondary mt-4" onclick="shareAsImage()">Share as Image</button>
             </div>
         </div>
+        <p id="note" class="text-sm text-black-600 mt-2 text-center text-bold">Note: The image will be downloaded on
+            your device.</p>
     </div>
 
     <script>
@@ -100,7 +103,7 @@
         function sendWishes() {
             const senderName = document.getElementById('senderName').value;
             const recipientName = document.getElementById('recipientName').value;
-            const recipientMessage = document.getElementById('recipientMessage').value || 'Wishing you a Merry Christmas and a Happy New Year!';
+            const recipientMessage = document.getElementById('recipientMessage').value || `🎄✨ Wishing you a Merry Christmas filled with joy, love, and endless blessings! 🎁🎅❤️`;
 
             if (senderName && recipientName) {
                 document.getElementById('recipientGreeting').textContent = `Dear ${recipientName},`;
